@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -938,8 +939,7 @@ public class IgClienteEAutomovel extends JDialog {
 		
 		//Verifica se o cpf tem nove números
 		if(cpf.matches("[0-9]{11}")) {
-			if(cpf.equals("11111111111") || cpf.equals("22222222222") || cpf.equals("33333333333") || cpf.equals("44444444444") || 
-			   cpf.equals("55555555555") || cpf.equals("66666666666") || cpf.equals("77777777777") || cpf.equals("88888888888") || cpf.equals("99999999999"))
+			if(verificarNumerosIguais(cpf))
 				return false;
 			
 			dig_10 = verificaDigito(cpf, 10); 
@@ -955,6 +955,26 @@ public class IgClienteEAutomovel extends JDialog {
 		return false;
 	}
 	
+	private static boolean verificarNumerosIguais(String cpf) {
+		int[] numerosCpf = converterCpfEmInteiro(cpf);
+		
+		Arrays.sort(numerosCpf);
+		
+		if(numerosCpf[0] == numerosCpf[numerosCpf.length - 1])
+			return true;
+		
+		return false;
+	}
+
+	private static int[] converterCpfEmInteiro(String cpf) {
+		int[] numerosCpf = new int[11];
+		
+		for(int indice = 0; indice < cpf.length(); indice++)
+			numerosCpf[indice] = Character.getNumericValue(cpf.charAt(indice));
+		
+		return numerosCpf;
+	}
+
 	/**
 	 * Verifica os dígitos do cpf
 	 * 
